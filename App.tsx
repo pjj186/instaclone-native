@@ -1,10 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
-import { StyleSheet, Text, View } from 'react-native';
+import LoggedOutNav from './navigators/LoggedOutNav';
+import { NavigationContainer } from '@react-navigation/native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -33,25 +33,17 @@ export default function App() {
     preload();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
+  const hideSplash = useCallback(async () => {
     if (!loading) {
       await SplashScreen.hideAsync();
     }
   }, [loading]);
 
+  hideSplash();
+
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <Text>엑스포 파워</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <LoggedOutNav />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
