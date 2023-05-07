@@ -6,6 +6,8 @@ import { Asset } from 'expo-asset';
 import LoggedOutNav from './navigators/LoggedOutNav';
 import { NavigationContainer } from '@react-navigation/native';
 import { Appearance } from 'react-native';
+import { ThemeProvider } from 'styled-components/native';
+import { darkTheme, lightTheme } from './themes';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -45,8 +47,10 @@ export default function App() {
   const light = Appearance.getColorScheme() === 'light';
 
   return (
-    <NavigationContainer>
-      <LoggedOutNav />
-    </NavigationContainer>
+    <ThemeProvider theme={light ? lightTheme : darkTheme}>
+      <NavigationContainer>
+        <LoggedOutNav />
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
