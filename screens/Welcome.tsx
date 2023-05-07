@@ -9,28 +9,32 @@ const Container = styled.View`
   align-items: center;
   justify-content: center;
   background-color: ${(props) => props.theme.bgColor};
+  padding: 0px 40px;
 `;
 
 const Logo = styled.Image`
   max-width: 100%;
-  height: 170px;
+  height: 150px;
 `;
 
-const CreateAccount = styled.View`
+const CreateAccount = styled.TouchableOpacity`
   background-color: ${(props) => props.theme.accent};
-  padding: 5px 10px;
+  padding: 13px 10px;
   border-radius: 5px;
+  width: 100%;
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `;
 const CreateAccountText = styled.Text`
   color: white;
   font-weight: 600;
   font-size: 16px;
+  text-align: center;
 `;
 
 const LoginLink = styled.Text`
   color: ${(props) => props.theme.accent};
   font-weight: 600;
-  margin-top: 10px;
+  margin-top: 20px;
 `;
 
 export default function Welcome(
@@ -42,11 +46,9 @@ export default function Welcome(
   return (
     <Container>
       <Logo resizeMode="contain" source={require('../assets/logo.png')} />
-      <TouchableOpacity onPress={goToCreateAccount}>
-        <CreateAccount>
-          <CreateAccountText>Create Account</CreateAccountText>
-        </CreateAccount>
-      </TouchableOpacity>
+      <CreateAccount disabled={false} onPress={goToCreateAccount}>
+        <CreateAccountText>Create Account</CreateAccountText>
+      </CreateAccount>
       <TouchableOpacity onPress={goToLogin}>
         <LoginLink>Log in</LoginLink>
       </TouchableOpacity>
