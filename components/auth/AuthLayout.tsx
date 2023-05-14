@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 import styled from 'styled-components/native';
 
 interface IAuthLayoutProps {
@@ -21,10 +22,16 @@ const Logo = styled.Image`
 `;
 
 export default function AuthLayout({ children }: IAuthLayoutProps) {
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   return (
-    <Container>
-      <Logo resizeMode="contain" source={require('../../assets/logo.png')} />
-      {children}
-    </Container>
+    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={dismissKeyboard}>
+      <Container>
+        <Logo resizeMode="contain" source={require('../../assets/logo.png')} />
+        {children}
+      </Container>
+    </TouchableWithoutFeedback>
   );
 }
