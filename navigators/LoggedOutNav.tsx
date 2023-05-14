@@ -5,12 +5,12 @@ import Login from '../screens/Login';
 import CreateAccount from '../screens/CreateAccount';
 
 export type RootStackParamList = {
-  Welcome: any;
-  Login: any;
-  CreateAccount: any;
+  Welcome: undefined;
+  Login: undefined;
+  CreateAccount: undefined;
 };
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function LoggedOutNav() {
   return (
