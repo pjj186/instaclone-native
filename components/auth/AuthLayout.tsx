@@ -17,13 +17,14 @@ const Container = styled.View`
   align-items: center;
   justify-content: center;
   background-color: ${(props) => props.theme.bgColor};
-  padding: 0px 40px;
+  padding: 0px 20px;
 `;
 
 const Logo = styled.Image`
   max-width: 50%;
   width: 100%;
   height: 100px;
+  margin: 0 auto;
   margin-bottom: 20px;
 `;
 
@@ -33,7 +34,11 @@ export default function AuthLayout({ children }: IAuthLayoutProps) {
   };
 
   return (
-    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={dismissKeyboard}>
+    <TouchableWithoutFeedback
+      style={{ flex: 1 }}
+      onPress={dismissKeyboard}
+      disabled={Platform.OS === 'web'}
+    >
       <Container>
         <KeyboardAvoidingView
           style={{

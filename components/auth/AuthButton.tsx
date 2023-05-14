@@ -1,5 +1,4 @@
 import React from 'react';
-import { GestureResponderEvent } from 'react-native';
 import styled from 'styled-components/native';
 
 interface IAuthButtonProps {

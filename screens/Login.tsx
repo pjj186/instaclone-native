@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
 import type { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigators/LoggedOutNav';
 import AuthLayout from '../components/auth/AuthLayout';
