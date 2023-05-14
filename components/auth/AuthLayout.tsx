@@ -1,5 +1,11 @@
 import React, { ReactNode } from 'react';
-import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+} from 'react-native';
+
 import styled from 'styled-components/native';
 
 interface IAuthLayoutProps {
@@ -29,8 +35,19 @@ export default function AuthLayout({ children }: IAuthLayoutProps) {
   return (
     <TouchableWithoutFeedback style={{ flex: 1 }} onPress={dismissKeyboard}>
       <Container>
-        <Logo resizeMode="contain" source={require('../../assets/logo.png')} />
-        {children}
+        <KeyboardAvoidingView
+          style={{
+            width: '100%',
+          }}
+          behavior="padding"
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 0}
+        >
+          <Logo
+            resizeMode="contain"
+            source={require('../../assets/logo.png')}
+          />
+          {children}
+        </KeyboardAvoidingView>
       </Container>
     </TouchableWithoutFeedback>
   );
