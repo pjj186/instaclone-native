@@ -89,7 +89,7 @@ export default function CreateAccount(
         lastOne={true}
       />
       <AuthButton
-        loading={true}
+        disabled={false}
         onPress={handleSubmit(onValid)}
         text="Create Account"
       />

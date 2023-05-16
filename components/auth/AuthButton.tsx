@@ -4,7 +4,8 @@ import styled from 'styled-components/native';
 
 interface IAuthButtonProps {
   onPress: () => void;
-  loading: boolean;
+  loading?: boolean;
+  disabled: boolean;
   text: string;
 }
 
@@ -26,9 +27,10 @@ export default function AuthButton({
   onPress,
   text,
   loading,
+  disabled,
 }: IAuthButtonProps) {
   return (
-    <Button onPress={onPress}>
+    <Button disabled={disabled} onPress={onPress}>
       {loading ? (
         <ActivityIndicator color="white" />
       ) : (
