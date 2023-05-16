@@ -5,11 +5,69 @@ import AuthLayout from '../components/auth/AuthLayout';
 import AuthButton from '../components/auth/AuthButton';
 import { TextInput } from '../components/auth/AuthShared';
 import { useForm } from 'react-hook-form';
+import { gql, useMutation } from '@apollo/client';
+
+interface ICreateAccountResult {
+  createAccount: {
+    ok: boolean;
+    error: string;
+  };
+}
+
+interface ICreateAccountForm {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+}
+
+const CREATE_ACCOUNT_MUTATION = gql`
+  mutation createAccount(
+    $firstName: String!
+    $lastName: String
+    $username: String!
+    $email: String!
+    $password: String!
+  ) {
+    createAccount(
+      firstName: $firstName
+      lastName: $lastName
+      username: $username
+      email: $email
+      password: $password
+    ) {
+      ok
+      error
+    }
+  }
+`;
 
 export default function CreateAccount(
   props: StackScreenProps<RootStackParamList, 'CreateAccount'>,
 ) {
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, getValues } =
+    useForm<ICreateAccountForm>();
+
+  const onCompleted = (data: ICreateAccountResult) => {
+    const {
+      createAccount: { ok },
+    } = data;
+    const { username, password } = getValues();
+    if (ok) {
+      props.navigation.navigate('Login', {
+        username,
+        password,
+      });
+    }
+  };
+
+  const [createAccountMutation, { loading }] = useMutation(
+    CREATE_ACCOUNT_MUTATION,
+    {
+      onCompleted,
+    },
+  );
 
   const lastNameRef: React.MutableRefObject<null> = useRef(null);
   const usernameRef: React.MutableRefObject<null> = useRef(null);
@@ -20,15 +78,21 @@ export default function CreateAccount(
     nextOne?.current?.focus();
   };
 
-  const onValid = (data: any) => {
-    console.log(data);
+  const onValid = (data: ICreateAccountForm) => {
+    if (!loading) {
+      createAccountMutation({
+        variables: {
+          ...data,
+        },
+      });
+    }
   };
 
   useEffect(() => {
-    register('firstname', {
+    register('firstName', {
       required: true,
     });
-    register('lastname', {
+    register('lastName', {
       required: true,
     });
     register('username', {
@@ -49,7 +113,7 @@ export default function CreateAccount(
         placeholderTextColor={'rgba(255,255,255,0.8)'}
         returnKeyType="next"
         onSubmitEditing={() => onNext(lastNameRef)}
-        onChangeText={(text) => setValue('firstname', text)}
+        onChangeText={(text) => setValue('firstName', text)}
       />
       <TextInput
         ref={lastNameRef}
@@ -57,7 +121,7 @@ export default function CreateAccount(
         placeholderTextColor={'rgba(255,255,255,0.8)'}
         returnKeyType="next"
         onSubmitEditing={() => onNext(usernameRef)}
-        onChangeText={(text) => setValue('lastname', text)}
+        onChangeText={(text) => setValue('lastName', text)}
       />
       <TextInput
         ref={usernameRef}

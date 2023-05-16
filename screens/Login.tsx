@@ -35,8 +35,14 @@ const LOGIN_MUTATION = gql`
 export default function Login(
   props: StackScreenProps<RootStackParamList, 'Login'>,
 ) {
+  console.log(props.route);
   const { register, handleSubmit, setValue, watch, getValues } =
-    useForm<ILoginForm>();
+    useForm<ILoginForm>({
+      defaultValues: {
+        username: props?.route?.params?.username,
+        password: props?.route?.params?.password,
+      },
+    });
 
   const passwordRef: React.MutableRefObject<null> = useRef(null);
 
@@ -79,6 +85,7 @@ export default function Login(
   return (
     <AuthLayout>
       <TextInput
+        value={watch('username')}
         placeholder="Username"
         placeholderTextColor={'rgba(255,255,255,0.8)'}
         returnKeyType="next"
@@ -87,6 +94,7 @@ export default function Login(
         onChangeText={(text) => setValue('username', text)}
       />
       <TextInput
+        value={watch('password')}
         ref={passwordRef}
         placeholder="Password"
         placeholderTextColor={'rgba(255,255,255,0.8)'}
