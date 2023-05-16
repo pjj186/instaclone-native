@@ -1,9 +1,10 @@
 import React from 'react';
+import { ActivityIndicator } from 'react-native';
 import styled from 'styled-components/native';
 
 interface IAuthButtonProps {
   onPress: () => void;
-  disabled: boolean;
+  loading: boolean;
   text: string;
 }
 
@@ -23,12 +24,16 @@ const ButtonText = styled.Text`
 
 export default function AuthButton({
   onPress,
-  disabled,
   text,
+  loading,
 }: IAuthButtonProps) {
   return (
-    <Button disabled={disabled} onPress={onPress}>
-      <ButtonText>{text}</ButtonText>
+    <Button onPress={onPress}>
+      {loading ? (
+        <ActivityIndicator color="white" />
+      ) : (
+        <ButtonText>{text}</ButtonText>
+      )}
     </Button>
   );
 }

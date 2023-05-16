@@ -25,11 +25,21 @@ export default function CreateAccount(
   };
 
   useEffect(() => {
-    register('firstname');
-    register('lastname');
-    register('username');
-    register('email');
-    register('password');
+    register('firstname', {
+      required: true,
+    });
+    register('lastname', {
+      required: true,
+    });
+    register('username', {
+      required: true,
+    });
+    register('email', {
+      required: true,
+    });
+    register('password', {
+      required: true,
+    });
   }, [register]);
 
   return (
@@ -79,7 +89,7 @@ export default function CreateAccount(
         lastOne={true}
       />
       <AuthButton
-        disabled={false}
+        loading={true}
         onPress={handleSubmit(onValid)}
         text="Create Account"
       />

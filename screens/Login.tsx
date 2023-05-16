@@ -22,8 +22,12 @@ export default function Login(
   };
 
   useEffect(() => {
-    register('username');
-    register('password');
+    register('username', {
+      required: true,
+    });
+    register('password', {
+      required: true,
+    });
   }, [register]);
 
   return (
@@ -47,7 +51,7 @@ export default function Login(
         onChangeText={(text) => setValue('password', text)}
       />
       <AuthButton
-        disabled={false}
+        loading={false}
         onPress={handleSubmit(onValid)}
         text="Log in"
       />
