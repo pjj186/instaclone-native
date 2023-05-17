@@ -3,11 +3,10 @@ import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { NavStackParamList } from '../components/nav/StackNavFactory';
 
-export default function Search(
-  props: StackScreenProps<NavStackParamList, 'Search'>,
+export default function Photo(
+  props: StackScreenProps<NavStackParamList, 'Photo'>,
 ) {
   const { navigation } = props;
-
   return (
     <View
       style={{
@@ -17,9 +16,9 @@ export default function Search(
         justifyContent: 'center',
       }}
     >
-      <Text style={{ color: 'white' }}>Search</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('Photo')}>
-        <Text style={{ color: 'white' }}>Go To Photo</Text>
+      <Text style={{ color: 'white' }}>Photo</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+        <Text style={{ color: 'white' }}>Go To Profile</Text>
       </TouchableOpacity>
     </View>
   );

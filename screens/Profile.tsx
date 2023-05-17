@@ -1,7 +1,11 @@
+import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
 import { Text, View } from 'react-native';
+import { NavStackParamList } from '../components/nav/StackNavFactory';
 
-export default function Profile() {
+export default function Profile(
+  props: StackScreenProps<NavStackParamList, 'Profile'>,
+) {
   return (
     <View
       style={{

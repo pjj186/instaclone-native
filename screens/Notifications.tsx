@@ -1,7 +1,11 @@
+import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
 import { Text, View } from 'react-native';
+import { NavStackParamList } from '../components/nav/StackNavFactory';
 
-export default function Notifications() {
+export default function Notifications(
+  props: StackScreenProps<NavStackParamList, 'Notifications'>,
+) {
   return (
     <View
       style={{

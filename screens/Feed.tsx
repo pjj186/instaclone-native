@@ -1,7 +1,11 @@
+import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
 import { Text, View } from 'react-native';
+import { NavStackParamList } from '../components/nav/StackNavFactory';
 
-export default function Feed() {
+export default function Feed(
+  props: StackScreenProps<NavStackParamList, 'Feed'>,
+) {
   return (
     <View
       style={{
