@@ -6,7 +6,7 @@ import { TextInput } from '../components/auth/AuthShared';
 import AuthButton from '../components/auth/AuthButton';
 import { useForm } from 'react-hook-form';
 import { gql, useMutation } from '@apollo/client';
-import { isLoggedInVar } from '../apollo';
+import { isLoggedInVar, logUserIn } from '../apollo';
 
 interface ILoginResult {
   login: {
@@ -35,7 +35,6 @@ const LOGIN_MUTATION = gql`
 export default function Login(
   props: StackScreenProps<RootStackParamList, 'Login'>,
 ) {
-  console.log(props.route);
   const { register, handleSubmit, setValue, watch, getValues } =
     useForm<ILoginForm>({
       defaultValues: {
@@ -51,7 +50,7 @@ export default function Login(
       login: { ok, token },
     } = data;
     if (ok) {
-      isLoggedInVar(true);
+      logUserIn(token);
     }
   };
 
