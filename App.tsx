@@ -20,8 +20,6 @@ export default function App() {
 
   const isLoggedIn = useReactiveVar(isLoggedInVar);
 
-  const preloadAssets = () => {};
-
   useEffect(() => {
     const preload = async () => {
       try {
