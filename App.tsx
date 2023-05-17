@@ -9,8 +9,9 @@ import { Appearance } from 'react-native';
 import { ThemeProvider } from 'styled-components/native';
 import { darkTheme, lightTheme } from './themes';
 import { ApolloProvider, useReactiveVar } from '@apollo/client';
-import client, { isLoggedInVar } from './apollo';
+import client, { isLoggedInVar, tokenVar } from './apollo';
 import LoggedInNav from './navigators/LoggedInNav';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -19,9 +20,16 @@ export default function App() {
 
   const isLoggedIn = useReactiveVar(isLoggedInVar);
 
+  const preloadAssets = () => {};
+
   useEffect(() => {
     const preload = async () => {
       try {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+          isLoggedInVar(true);
+          tokenVar(token);
+        }
         const fontToLoad = [Ionicons.font];
         const fontPromises = fontToLoad.map((font) => Font.loadAsync(font));
         const imagesToLoad = [
