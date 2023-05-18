@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { NavStackParamList } from '../components/nav/StackNavFactory';
+import { NavStackParamList } from '../navigators/StackNavFactory';
 
 export default function Search(
   props: StackScreenProps<NavStackParamList, 'Search'>,
