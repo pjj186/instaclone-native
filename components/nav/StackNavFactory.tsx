@@ -26,7 +26,16 @@ export default function StackNavFactory(props: IStackNavFactoryProps) {
   const { screenName } = props;
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerBackTitleVisible: false,
+        headerTintColor: 'white',
+        headerStyle: {
+          backgroundColor: 'black',
+          shadowColor: 'rgba(255,255,255,0.3)',
+        },
+      }}
+    >
       {screenName === 'Feed' ? (
         <Stack.Screen name="Feed" component={Feed} />
       ) : null}
