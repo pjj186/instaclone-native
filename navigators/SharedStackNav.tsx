@@ -6,9 +6,9 @@ import Feed from '../screens/Feed';
 import Search from '../screens/Search';
 import Notifications from '../screens/Notifications';
 import Me from '../screens/Me';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 
-interface IStackNavFactoryProps {
+interface ISharedStackNavProps {
   screenName: string;
 }
 
@@ -23,12 +23,13 @@ export type NavStackParamList = {
 
 const Stack = createStackNavigator<NavStackParamList>();
 
-export default function StackNavFactory(props: IStackNavFactoryProps) {
+export default function SharedStackNav(props: ISharedStackNavProps) {
   const { screenName } = props;
 
   return (
     <Stack.Navigator
       screenOptions={{
+        headerMode: 'screen',
         headerBackTitleVisible: false,
         headerTintColor: 'white',
         headerStyle: {
@@ -38,7 +39,29 @@ export default function StackNavFactory(props: IStackNavFactoryProps) {
       }}
     >
       {screenName === 'Feed' ? (
-        <Stack.Screen name="Feed" component={Feed} />
+        <Stack.Screen
+          name="Feed"
+          component={Feed}
+          options={{
+            headerTitle: () => (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Image
+                  style={{
+                    maxHeight: 80,
+                  }}
+                  resizeMode="contain"
+                  source={require('../assets/logo.png')}
+                />
+              </View>
+            ),
+          }}
+        />
       ) : null}
       {screenName === 'Search' ? (
         <Stack.Screen name="Search" component={Search} />

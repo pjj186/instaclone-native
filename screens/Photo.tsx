@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { NavStackParamList } from '../navigators/StackNavFactory';
+import { NavStackParamList } from '../navigators/SharedStackNav';
 
 export default function Photo(
   props: StackScreenProps<NavStackParamList, 'Photo'>,
