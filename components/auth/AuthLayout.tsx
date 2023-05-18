@@ -25,7 +25,6 @@ const Logo = styled.Image`
   width: 100%;
   height: 100px;
   margin: 0 auto;
-  margin-bottom: 20px;
 `;
 
 export default function AuthLayout({ children }: IAuthLayoutProps) {

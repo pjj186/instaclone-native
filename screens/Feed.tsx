@@ -1,12 +1,36 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { NavStackParamList } from '../navigators/SharedStackNav';
+import { gql, useQuery } from '@apollo/client';
+import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from '../fragments';
+
+const FEED_QUERY = gql`
+  query seeFeed {
+    seeFeed {
+      ...PhotoFragment
+      user {
+        username
+        avatar
+      }
+      caption
+      comments {
+        ...CommentFragment
+      }
+      createdAt
+      isMine
+    }
+  }
+  ${PHOTO_FRAGMENT}
+  ${COMMENT_FRAGMENT}
+`;
 
 export default function Feed(
   props: StackScreenProps<NavStackParamList, 'Feed'>,
 ) {
   const { navigation } = props;
+
+  const { data } = useQuery(FEED_QUERY);
 
   return (
     <View
@@ -18,9 +42,6 @@ export default function Feed(
       }}
     >
       <Text style={{ color: 'white' }}>Feed</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('Photo')}>
-        <Text style={{ color: 'white' }}>Go To Photo</Text>
-      </TouchableOpacity>
     </View>
   );
 }
