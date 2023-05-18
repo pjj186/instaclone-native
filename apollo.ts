@@ -31,7 +31,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      token: tokenVar(), // current value
+      authorization: tokenVar(), // current value
     },
   };
 });
