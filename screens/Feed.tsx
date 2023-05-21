@@ -1,9 +1,42 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { FlatList, ListRenderItem, Text, View } from 'react-native';
 import { NavStackParamList } from '../navigators/SharedStackNav';
 import { gql, useQuery } from '@apollo/client';
 import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from '../fragments';
+import ScreenLayout from '../components/ScreenLayout';
+
+interface ISeeFeedResult {
+  seeFeed: IPhoto[];
+}
+
+interface IPhoto {
+  caption: string;
+  commentNumber: number;
+  comments: IComment[];
+  createdAt: string;
+  file: string;
+  id: number;
+  isLiked: boolean;
+  isMine: boolean;
+  likes: number;
+  user: IUser;
+  __typename: string;
+}
+
+interface IComment {
+  createdAt: string;
+  id: number;
+  isMine: boolean;
+  user: IUser;
+  __typename: string;
+}
+
+interface IUser {
+  avatar: string;
+  username: string;
+  __typename: string;
+}
 
 const FEED_QUERY = gql`
   query seeFeed {
@@ -30,18 +63,23 @@ export default function Feed(
 ) {
   const { navigation } = props;
 
-  const { data } = useQuery(FEED_QUERY);
+  const { data, loading } = useQuery<ISeeFeedResult>(FEED_QUERY);
+
+  const renderPhoto: ListRenderItem<IPhoto> = ({ item: photo }) => {
+    return (
+      <View style={{ flex: 1 }}>
+        <Text style={{ color: 'white' }}>{photo.caption}</Text>
+      </View>
+    );
+  };
 
   return (
-    <View
-      style={{
-        backgroundColor: 'black',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Text style={{ color: 'white' }}>Feed</Text>
-    </View>
+    <ScreenLayout loading={loading}>
+      <FlatList
+        data={data?.seeFeed}
+        renderItem={renderPhoto}
+        keyExtractor={(photo) => String(photo.id)}
+      />
+    </ScreenLayout>
   );
 }
