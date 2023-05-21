@@ -5,37 +5,10 @@ import { NavStackParamList } from '../navigators/SharedStackNav';
 import { gql, useQuery } from '@apollo/client';
 import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from '../fragments';
 import ScreenLayout from '../components/ScreenLayout';
+import Photo, { IPhoto } from '../components/Photo';
 
 interface ISeeFeedResult {
   seeFeed: IPhoto[];
-}
-
-interface IPhoto {
-  caption: string;
-  commentNumber: number;
-  comments: IComment[];
-  createdAt: string;
-  file: string;
-  id: number;
-  isLiked: boolean;
-  isMine: boolean;
-  likes: number;
-  user: IUser;
-  __typename: string;
-}
-
-interface IComment {
-  createdAt: string;
-  id: number;
-  isMine: boolean;
-  user: IUser;
-  __typename: string;
-}
-
-interface IUser {
-  avatar: string;
-  username: string;
-  __typename: string;
 }
 
 const FEED_QUERY = gql`
@@ -66,16 +39,16 @@ export default function Feed(
   const { data, loading } = useQuery<ISeeFeedResult>(FEED_QUERY);
 
   const renderPhoto: ListRenderItem<IPhoto> = ({ item: photo }) => {
-    return (
-      <View style={{ flex: 1 }}>
-        <Text style={{ color: 'white' }}>{photo.caption}</Text>
-      </View>
-    );
+    return <Photo {...photo} />;
   };
 
   return (
     <ScreenLayout loading={loading}>
       <FlatList
+        style={{
+          width: '100%',
+        }}
+        showsVerticalScrollIndicator={false}
         data={data?.seeFeed}
         renderItem={renderPhoto}
         keyExtractor={(photo) => String(photo.id)}
