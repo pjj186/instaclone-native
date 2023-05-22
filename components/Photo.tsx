@@ -1,6 +1,9 @@
-import React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useEffect, useState } from 'react';
+import { Image, TouchableOpacity, useWindowDimensions } from 'react-native';
 import styled from 'styled-components/native';
+import { NavStackParamList } from '../navigators/SharedStackNav';
 
 export interface IPhoto {
   caption: string;
@@ -32,12 +35,22 @@ interface IUser {
 
 const Container = styled.View``;
 
-const Header = styled.View``;
+const Header = styled.TouchableOpacity`
+  padding: 10px;
+  flex-direction: row;
+  align-items: center;
+`;
 
-const UserAvatar = styled.Image``;
+const UserAvatar = styled.Image`
+  margin-right: 10px;
+  width: 25px;
+  height: 25px;
+  border-radius: 12.5px;
+`;
 
 const Username = styled.Text`
   color: white;
+  font-weight: 600;
 `;
 
 const File = styled.Image``;
@@ -54,18 +67,29 @@ const Likes = styled.Text`
 export default function Photo(props: IPhoto) {
   const { id, user, caption, file, isLiked, likes } = props;
 
-  const { width, height } = useWindowDimensions();
+  const navigation = useNavigation<StackNavigationProp<NavStackParamList>>();
+
+  const { width: Swidth, height } = useWindowDimensions();
+
+  const [imageHeight, setImageHeight] = useState(height - 450);
+
+  useEffect(() => {
+    Image.getSize(file, (width, height) => {
+      setImageHeight((height * Swidth) / width);
+    });
+  }, [file]);
 
   return (
     <Container>
-      <Header>
-        <UserAvatar />
+      <Header onPress={() => navigation.navigate('Profile')}>
+        <UserAvatar resizeMode="cover" source={{ uri: user.avatar }} />
         <Username>{user.username}</Username>
       </Header>
       <File
+        resizeMode="cover"
         style={{
-          width,
-          height: height - 500,
+          width: Swidth,
+          height: imageHeight,
         }}
         source={{ uri: file }}
       />
@@ -75,7 +99,9 @@ export default function Photo(props: IPhoto) {
       </Actions>
       <Likes>{likes === 1 ? '1 like' : `${likes} likes`}</Likes>
       <Caption>
-        <Username>{user.username}</Username>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <Username>{user.username}</Username>
+        </TouchableOpacity>
         <CaptionText>{caption}</CaptionText>
       </Caption>
     </Container>
