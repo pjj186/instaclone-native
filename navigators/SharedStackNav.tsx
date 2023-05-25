@@ -7,6 +7,8 @@ import Search from '../screens/Search';
 import Notifications from '../screens/Notifications';
 import Me from '../screens/Me';
 import { Image, View } from 'react-native';
+import Likes from '../screens/Likes';
+import Comments from '../screens/Comments';
 
 interface ISharedStackNavProps {
   screenName: string;
@@ -19,6 +21,8 @@ export type NavStackParamList = {
   Search: undefined;
   Me: undefined;
   Notifications: undefined;
+  Likes: undefined;
+  Comments: undefined;
 };
 
 const Stack = createStackNavigator<NavStackParamList>();
@@ -40,7 +44,7 @@ export default function SharedStackNav(props: ISharedStackNavProps) {
     >
       {screenName === 'Feed' ? (
         <Stack.Screen
-          name="Feed"
+          name='Feed'
           component={Feed}
           options={{
             headerTitle: () => (
@@ -55,7 +59,7 @@ export default function SharedStackNav(props: ISharedStackNavProps) {
                   style={{
                     maxHeight: 80,
                   }}
-                  resizeMode="contain"
+                  resizeMode='contain'
                   source={require('../assets/logo.png')}
                 />
               </View>
@@ -64,14 +68,16 @@ export default function SharedStackNav(props: ISharedStackNavProps) {
         />
       ) : null}
       {screenName === 'Search' ? (
-        <Stack.Screen name="Search" component={Search} />
+        <Stack.Screen name='Search' component={Search} />
       ) : null}
       {screenName === 'Notifications' ? (
-        <Stack.Screen name="Notifications" component={Notifications} />
+        <Stack.Screen name='Notifications' component={Notifications} />
       ) : null}
-      {screenName === 'Me' ? <Stack.Screen name="Me" component={Me} /> : null}
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Photo" component={Photo} />
+      {screenName === 'Me' ? <Stack.Screen name='Me' component={Me} /> : null}
+      <Stack.Screen name='Profile' component={Profile} />
+      <Stack.Screen name='Photo' component={Photo} />
+      <Stack.Screen name='Likes' component={Likes} />
+      <Stack.Screen name='Comments' component={Comments} />
     </Stack.Navigator>
   );
 }
