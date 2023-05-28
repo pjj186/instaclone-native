@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, ListRenderItem, Text, View } from 'react-native';
 import { NavStackParamList } from '../navigators/SharedStackNav';
 import { gql, useQuery } from '@apollo/client';
@@ -36,15 +36,29 @@ export default function Feed(
 ) {
   const { navigation } = props;
 
-  const { data, loading } = useQuery<ISeeFeedResult>(FEED_QUERY);
+  const { data, loading, refetch } = useQuery<ISeeFeedResult>(FEED_QUERY);
 
   const renderPhoto: ListRenderItem<IPhoto> = ({ item: photo }) => {
     return <Photo {...photo} />;
   };
 
+  const refresh = async () => {
+    try {
+      setRefreshing(true);
+      await refetch();
+      setRefreshing(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [refreshing, setRefreshing] = useState(false);
+
   return (
     <ScreenLayout loading={loading}>
       <FlatList
+        refreshing={refreshing}
+        onRefresh={refresh}
         style={{
           width: '100%',
         }}
