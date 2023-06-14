@@ -12,8 +12,8 @@ interface ISeeFeedResult {
 }
 
 const FEED_QUERY = gql`
-  query seeFeed {
-    seeFeed {
+  query seeFeed($offset: Int!) {
+    seeFeed(offset: $offset) {
       ...PhotoFragment
       user {
         username
@@ -36,7 +36,14 @@ export default function Feed(
 ) {
   const { navigation } = props;
 
-  const { data, loading, refetch } = useQuery<ISeeFeedResult>(FEED_QUERY);
+  const { data, loading, refetch, fetchMore } = useQuery<ISeeFeedResult>(
+    FEED_QUERY,
+    {
+      variables: {
+        offset: 0,
+      },
+    },
+  );
 
   const renderPhoto: ListRenderItem<IPhoto> = ({ item: photo }) => {
     return <Photo {...photo} />;
@@ -57,6 +64,14 @@ export default function Feed(
   return (
     <ScreenLayout loading={loading}>
       <FlatList
+        onEndReachedThreshold={0}
+        onEndReached={() =>
+          fetchMore({
+            variables: {
+              offset: data?.seeFeed?.length,
+            },
+          })
+        }
         refreshing={refreshing}
         onRefresh={refresh}
         style={{
