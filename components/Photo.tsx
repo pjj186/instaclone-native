@@ -34,9 +34,12 @@ interface IComment {
   __typename: string;
 }
 
-interface IUser {
+export interface IUser {
+  id: number;
   avatar: string;
   username: string;
+  isFollowing: boolean;
+  isMe: boolean;
   __typename: string;
 }
 
@@ -113,7 +116,6 @@ export default function Photo(props: IPhoto) {
     cache: ApolloCache<NormalizedCacheObject>,
     result: any,
   ) => {
-    console.log(result);
     const {
       data: {
         toggleLike: { ok },
@@ -178,7 +180,13 @@ export default function Photo(props: IPhoto) {
             <Ionicons name='chatbubble-outline' color='white' size={22} />
           </Action>
         </Actions>
-        <TouchableOpacity onPress={() => navigation.navigate('Likes')}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Likes', {
+              photoId: id,
+            })
+          }
+        >
           <Likes>{likes === 1 ? '1 like' : `${likes} likes`}</Likes>
         </TouchableOpacity>
         <Caption>

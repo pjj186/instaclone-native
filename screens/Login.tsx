@@ -6,7 +6,7 @@ import { TextInput } from '../components/auth/AuthShared';
 import AuthButton from '../components/auth/AuthButton';
 import { useForm } from 'react-hook-form';
 import { gql, useMutation } from '@apollo/client';
-import { isLoggedInVar, logUserIn } from '../apollo';
+import { logUserIn } from '../apollo';
 
 interface ILoginResult {
   login: {
@@ -85,20 +85,20 @@ export default function Login(
     <AuthLayout>
       <TextInput
         value={watch('username')}
-        placeholder="Username"
+        placeholder='Username'
         placeholderTextColor={'rgba(255,255,255,0.8)'}
-        returnKeyType="next"
-        autoCapitalize="none"
+        returnKeyType='next'
+        autoCapitalize='none'
         onSubmitEditing={() => onNext(passwordRef)}
         onChangeText={(text) => setValue('username', text)}
       />
       <TextInput
         value={watch('password')}
         ref={passwordRef}
-        placeholder="Password"
+        placeholder='Password'
         placeholderTextColor={'rgba(255,255,255,0.8)'}
         secureTextEntry
-        returnKeyType="done"
+        returnKeyType='done'
         lastOne={true}
         onSubmitEditing={handleSubmit(onValid)}
         onChangeText={(text) => setValue('password', text)}
@@ -107,7 +107,7 @@ export default function Login(
         disabled={!watch('username') || !watch('password')}
         loading={loading}
         onPress={handleSubmit(onValid)}
-        text="Log in"
+        text='Log in'
       />
     </AuthLayout>
   );

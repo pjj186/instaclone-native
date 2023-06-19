@@ -21,7 +21,9 @@ export type NavStackParamList = {
   Search: undefined;
   Me: undefined;
   Notifications: undefined;
-  Likes: undefined;
+  Likes: {
+    photoId: number;
+  };
   Comments: undefined;
 };
 
