@@ -5,6 +5,12 @@ import { Image, TouchableOpacity, useWindowDimensions } from 'react-native';
 import styled from 'styled-components/native';
 import { NavStackParamList } from '../navigators/SharedStackNav';
 import { Ionicons } from '@expo/vector-icons';
+import {
+  ApolloCache,
+  NormalizedCacheObject,
+  gql,
+  useMutation,
+} from '@apollo/client';
 
 export interface IPhoto {
   caption: string;
@@ -33,6 +39,15 @@ interface IUser {
   username: string;
   __typename: string;
 }
+
+const TOGGLE_LIKE_MUTATION = gql`
+  mutation toggleLiked($id: Int!) {
+    toggleLike(id: $id) {
+      ok
+      error
+    }
+  }
+`;
 
 const Container = styled.View``;
 
@@ -94,6 +109,44 @@ export default function Photo(props: IPhoto) {
     });
   }, [file]);
 
+  const updateToggleLike = (
+    cache: ApolloCache<NormalizedCacheObject>,
+    result: any,
+  ) => {
+    console.log(result);
+    const {
+      data: {
+        toggleLike: { ok },
+      },
+    } = result;
+
+    if (ok) {
+      const photoId = `Photo:${id}`;
+      cache.modify({
+        id: photoId,
+        fields: {
+          isLiked(prev) {
+            return !prev;
+          },
+          likes(prev) {
+            if (isLiked) {
+              return prev - 1;
+            }
+            return prev + 1;
+          },
+        },
+      });
+    }
+  };
+
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE_MUTATION, {
+    variables: {
+      id,
+    },
+    // update : mutation이 완료된 후 Apollo 클라이언트 캐시를 업데이트 하는데 사용되는 기능
+    update: updateToggleLike,
+  });
+
   return (
     <Container>
       <Header onPress={() => navigation.navigate('Profile')}>
@@ -110,7 +163,7 @@ export default function Photo(props: IPhoto) {
       />
       <ExtraContainer>
         <Actions>
-          <Action>
+          <Action onPress={() => toggleLikeMutation()}>
             <Ionicons
               name={isLiked ? 'heart' : 'heart-outline'}
               color={isLiked ? 'tomato' : 'white'}
