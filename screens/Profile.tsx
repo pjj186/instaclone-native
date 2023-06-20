@@ -1,11 +1,20 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { NavStackParamList } from '../navigators/SharedStackNav';
 
-export default function Profile(
-  props: StackScreenProps<NavStackParamList, 'Profile'>,
-) {
+export default function Profile({
+  navigation,
+  route,
+}: StackScreenProps<NavStackParamList, 'Profile'>) {
+  useEffect(() => {
+    if (route?.params?.username) {
+      navigation.setOptions({
+        title: route.params?.username + "'s Profile",
+      });
+    }
+  }, []);
+
   return (
     <View
       style={{
