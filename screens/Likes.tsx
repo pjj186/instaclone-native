@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList, ListRenderItem, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NavStackParamList } from '../navigators/SharedStackNav';
 import { gql, useQuery } from '@apollo/client';
@@ -41,6 +41,15 @@ export default function Likes({ route }: Props) {
   return (
     <ScreenLayout loading={loading}>
       <FlatList
+        ItemSeparatorComponent={() => (
+          <View
+            style={{
+              width: '100%',
+              height: 1,
+              backgroundColor: 'rgba(255,255,255,0.2)',
+            }}
+          ></View>
+        )}
         refreshing={refreshing}
         onRefresh={onRefresh}
         data={data?.seePhotoLikes}

@@ -149,9 +149,16 @@ export default function Photo(props: IPhoto) {
     update: updateToggleLike,
   });
 
+  const goToProfile = () => {
+    navigation.navigate('Profile', {
+      username: user.username,
+      id: user.id,
+    });
+  };
+
   return (
     <Container>
-      <Header onPress={() => navigation.navigate('Profile')}>
+      <Header onPress={goToProfile}>
         <UserAvatar resizeMode='cover' source={{ uri: user.avatar }} />
         <Username>{user.username}</Username>
       </Header>
@@ -190,7 +197,7 @@ export default function Photo(props: IPhoto) {
           <Likes>{likes === 1 ? '1 like' : `${likes} likes`}</Likes>
         </TouchableOpacity>
         <Caption>
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <TouchableOpacity onPress={goToProfile}>
             <Username>{user.username}</Username>
           </TouchableOpacity>
           <CaptionText>{caption}</CaptionText>

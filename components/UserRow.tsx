@@ -7,12 +7,15 @@ import {
 } from '@apollo/client';
 import { IUser } from './Photo';
 import styled from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { NavStackParamList } from '../navigators/SharedStackNav';
 
 interface FollowBtnProps {
   isFollowing?: boolean;
 }
 
-const Column = styled.View`
+const Column = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   padding: 5px 15px;
@@ -34,7 +37,7 @@ const Wrapper = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 5px;
+  padding: 5px 10px;
 `;
 const FollowBtn = styled.TouchableOpacity<FollowBtnProps>`
   background-color: ${(props) =>
@@ -64,12 +67,15 @@ const UNFOLLOW_USER_MUTATION = gql`
 `;
 
 export default function UserRow({
+  id,
   avatar,
   username,
   isFollowing,
   isMe,
 }: IUser) {
   const client = useApolloClient();
+
+  const navigation = useNavigation<StackNavigationProp<NavStackParamList>>();
 
   const unfollowUserUpdate = (
     cache: ApolloCache<NormalizedCacheObject>,
@@ -127,7 +133,14 @@ export default function UserRow({
 
   return (
     <Wrapper>
-      <Column>
+      <Column
+        onPress={() =>
+          navigation.navigate('Profile', {
+            username,
+            id,
+          })
+        }
+      >
         <Avatar source={{ uri: avatar }} />
         <Username>{username}</Username>
       </Column>

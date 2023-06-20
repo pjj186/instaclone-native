@@ -15,7 +15,12 @@ interface ISharedStackNavProps {
 }
 
 export type NavStackParamList = {
-  Profile: undefined;
+  Profile:
+    | {
+        username: string;
+        id: number;
+      }
+    | undefined;
   Photo: undefined;
   Feed: undefined;
   Search: undefined;
