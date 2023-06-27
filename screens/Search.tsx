@@ -97,7 +97,13 @@ export default function Search({
   }, []);
 
   const renderItem: ListRenderItem<IPhoto> = ({ item: photo }) => (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('Photo', {
+          photoId: photo.id,
+        });
+      }}
+    >
       <Image
         source={{
           uri: photo.file,

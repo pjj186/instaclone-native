@@ -21,7 +21,9 @@ export type NavStackParamList = {
         id: number;
       }
     | undefined;
-  Photo: undefined;
+  Photo: {
+    photoId: number;
+  };
   Feed: undefined;
   Search: undefined;
   Me: undefined;
