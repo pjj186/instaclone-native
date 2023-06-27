@@ -5,10 +5,20 @@ import { NavStackParamList } from '../navigators/SharedStackNav';
 import styled from 'styled-components/native';
 import DismissKeyboard from '../components/DismissKeyboard';
 import { useForm } from 'react-hook-form';
+import { gql, useLazyQuery } from '@apollo/client';
 
 interface ISearchBoxForm {
   keyword: string;
 }
+
+const SEARCH_PHOTOS = gql`
+  query searchPhotos($keyword: String!) {
+    searchPhotos(keyword: $keyword) {
+      id
+      file
+    }
+  }
+`;
 
 const Input = styled.TextInput``;
 
@@ -16,6 +26,9 @@ export default function Search({
   navigation,
 }: StackScreenProps<NavStackParamList, 'Search'>) {
   const { setValue, register, watch } = useForm<ISearchBoxForm>();
+
+  const [startQueryFn, { loading, data }] = useLazyQuery(SEARCH_PHOTOS);
+
   const SearchBox = () => (
     <TextInput
       style={{ backgroundColor: 'white' }}
