@@ -1,14 +1,27 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
-import { ActivityIndicator, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  ListRenderItem,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import { NavStackParamList } from '../navigators/SharedStackNav';
 import styled from 'styled-components/native';
 import DismissKeyboard from '../components/DismissKeyboard';
 import { useForm } from 'react-hook-form';
 import { gql, useLazyQuery } from '@apollo/client';
+import { IPhoto } from '../components/Photo';
 
 interface ISearchBoxForm {
   keyword: string;
+}
+
+interface InputProps {
+  width: number;
 }
 
 const SEARCH_PHOTOS = gql`
@@ -32,11 +45,20 @@ const MessageText = styled.Text`
   font-weight: 600;
 `;
 
-const Input = styled.TextInput``;
+const Input = styled.TextInput<InputProps>`
+  background-color: rgba(255, 255, 255, 1);
+  width: ${(props) => props.width / 1.5}px;
+  padding: 5px 10px;
+  border-radius: 10px;
+`;
 
 export default function Search({
   navigation,
 }: StackScreenProps<NavStackParamList, 'Search'>) {
+  const numColumns = 4;
+
+  const { width } = useWindowDimensions();
+
   const { setValue, register, handleSubmit } = useForm<ISearchBoxForm>();
 
   const [startQueryFn, { loading, data, called }] = useLazyQuery(SEARCH_PHOTOS);
@@ -52,9 +74,9 @@ export default function Search({
   };
 
   const SearchBox = () => (
-    <TextInput
-      style={{ backgroundColor: 'white' }}
-      placeholderTextColor='black'
+    <Input
+      width={width}
+      placeholderTextColor='rgba(0,0,0,0.8)'
       placeholder='Search photos'
       autoCapitalize='none'
       returnKeyLabel='Search'
@@ -74,7 +96,19 @@ export default function Search({
     });
   }, []);
 
-  console.log(data);
+  const renderItem: ListRenderItem<IPhoto> = ({ item: photo }) => (
+    <TouchableOpacity>
+      <Image
+        source={{
+          uri: photo.file,
+        }}
+        style={{
+          width: width / numColumns,
+          height: 100,
+        }}
+      />
+    </TouchableOpacity>
+  );
 
   return (
     <DismissKeyboard>
@@ -95,10 +129,19 @@ export default function Search({
             <MessageText>Search by keyword</MessageText>
           </MessageContainer>
         ) : null}
-        {data?.searchPhotos !== undefined && data?.searchPhotos.length === 0 ? (
-          <MessageContainer>
-            <MessageText>Could not find anything</MessageText>
-          </MessageContainer>
+        {data?.searchPhotos !== undefined ? (
+          data?.searchPhotos.length === 0 ? (
+            <MessageContainer>
+              <MessageText>Could not find anything</MessageText>
+            </MessageContainer>
+          ) : (
+            <FlatList
+              numColumns={numColumns}
+              data={data?.searchPhotos}
+              keyExtractor={(photo) => '' + photo.id}
+              renderItem={renderItem}
+            />
+          )
         ) : null}
       </View>
     </DismissKeyboard>
